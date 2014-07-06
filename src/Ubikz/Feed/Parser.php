@@ -32,9 +32,12 @@ class Parser
         $result = array();
         $f = \Zend\Feed\Reader\Reader::import($feed);
         foreach ($f as $entry) {
-            $parse = self::_parseDescription($entry->getDescription(), $type);
-            if (!empty($parse)){
-                $result[] = $parse;
+            if ((new \DateTime())->setTime(0,0) ==
+                $entry->getDateModified()->setTimezone(new \DateTimeZone('Europe/Paris'))->setTime(0,0)) {
+                $parse = self::_parseDescription($entry->getDescription(), $type);
+                if (!empty($parse)){
+                    $result[] = $parse;
+                }
             }
         }
 
