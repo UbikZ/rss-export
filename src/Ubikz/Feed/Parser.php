@@ -34,6 +34,7 @@ class Parser
         $result = array();
         $f = \Zend\Feed\Reader\Reader::import($feed);
         foreach ($f as $entry) {
+            SimpleIO::msg('.');
             if ((new \DateTime())->setTime(0,0) ==
                 $entry->getDateModified()->setTimezone(new \DateTimeZone('Europe/Paris'))->setTime(0,0)) {
                 $parse = self::_parseDescription($entry->getDescription(), $type);
@@ -61,10 +62,11 @@ class Parser
         $links = array();
 
         if (!is_dir($src)) {
-            SimpleIO::error("`$src` is not a directory", "set function");
+            SimpleIO::error("`$src` is not a directory", "set");
         }
 
         foreach ($feeds as $feed) {
+            SimpleIO::info("Loading `$feed` feed...", "set");
             $links = array_merge_recursive($links, self::_getDescriptionByFeed($feed, self::_guessTypeForLink($feed)));
         }
 
