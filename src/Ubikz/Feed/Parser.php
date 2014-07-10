@@ -54,14 +54,15 @@ class Parser
         return $return;
     }
 
-    public static function set($feeds, $src = 'web/links/parsedLinks')
+    public static function set($feeds, $src = '')
     {
         $links = array();
         foreach ($feeds as $feed) {
             $links = array_merge_recursive($links, self::_getDescriptionByFeed($feed, self::_guessTypeForLink($feed)));
         }
 
-        $fileName = $src . "-" . (new \DateTime())->format('Y-m-d');
+        $dir = realpath(dirname($src));
+        $fileName = $dir . "/parsedLinks-" . (new \DateTime())->format('Y-m-d');
         if (false !== ($content = @file_get_contents($fileName))) {
             $linksFromFile = explode(PHP_EOL, $content);
             $links = array_unique(array_merge($links, $linksFromFile));
