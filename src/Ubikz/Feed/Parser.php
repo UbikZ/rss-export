@@ -2,6 +2,8 @@
 
 namespace Ubikz\Feed;
 
+use \Ubikz\Util\SimpleIO;
+
 class Parser
 {
     const TYPE_REDDIT = 'reddit';
@@ -57,6 +59,11 @@ class Parser
     public static function set($feeds, $src = '')
     {
         $links = array();
+
+        if (!is_dir($src)) {
+            SimpleIO::error("`$src` is not a directory", "set function");
+        }
+
         foreach ($feeds as $feed) {
             $links = array_merge_recursive($links, self::_getDescriptionByFeed($feed, self::_guessTypeForLink($feed)));
         }
