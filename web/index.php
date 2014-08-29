@@ -14,5 +14,6 @@ function main($argc, $argv = array())
 
 function usage()
 {
+    phpinfo();
     echo "Wrong usage" . PHP_EOL;  exit();
 }

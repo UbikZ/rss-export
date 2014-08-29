@@ -34,7 +34,6 @@ class Parser
         $result = array();
         $f = \Zend\Feed\Reader\Reader::import($feed);
         foreach ($f as $entry) {
-            SimpleIO::msg('.');
             if ((new \DateTime())->setTime(0,0) ==
                 $entry->getDateModified()->setTimezone(new \DateTimeZone('Europe/Paris'))->setTime(0,0)) {
                 $parse = self::_parseDescription($entry->getDescription(), $type);
@@ -70,10 +69,11 @@ class Parser
             $links = array_merge_recursive($links, self::_getDescriptionByFeed($feed, self::_guessTypeForLink($feed)));
         }
 
-        $dir = realpath(dirname($src));
+        $dir = realpath($src);
         $fileName = $dir . "/parsedLinks-" . (new \DateTime())->format('Y-m-d');
-        if (false !== ($content = @file_get_contents($fileName))) {
-            $linksFromFile = explode(PHP_EOL, $content);
+	var_dump($fileName);
+        if (false !== ($content = file_get_contents($fileName))) {
+  	    $linksFromFile = explode(PHP_EOL, $content);
             $links = array_unique(array_merge($links, $linksFromFile));
         }
 
